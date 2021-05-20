@@ -23,7 +23,7 @@ rpkgs=
 mkdir -p modules
 touch modules/init.lua
 echo "#! $(which env) lua" >modules/init.lua
-cat << EOF >>modules/init.lua
+cat << EOF >modules/init.lua
 package.path = package.path..';$(pwd)modules/?/init.o;$(pwd)modules/?.o'
 package.path = package.path..';$(pwd)modules/?/init.lua;$(pwd)modules/?.lua'
 package.path = package.path..';$(pwd)/?/init.o;$(pwd)/?.o'
