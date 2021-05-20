@@ -35,9 +35,9 @@ bash loaded_modules.sh -r &lt;pkg&gt;,&lt;pkg&gt;
 
 <b style="color:goldenrod;">[reload packages from local system]</b>
 <pre>
-bash loaded_modules.sh -d -r &lt;pkg&gt;,&lt;pkg&gt;
-bash loaded_modules.sh -r &lt;pkg&gt;,&lt;pkg&gt; -d
-DEVMODE=1 bash loaded_modules.sh -r &lt;pkg&gt;,&lt;pkg&gt;
+bash loaded_modules.sh -d -s &lt;pkg&gt;,&lt;pkg&gt;
+bash loaded_modules.sh -s &lt;pkg&gt;,&lt;pkg&gt; -d
+DEVMODE=1 bash loaded_modules.sh -s &lt;pkg&gt;,&lt;pkg&gt;
 </pre>
 
 <b style="color:goldenrod;">[buggy]</b>
