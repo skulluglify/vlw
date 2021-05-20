@@ -14,42 +14,42 @@ require "&lt;pkg&gt;";
 <p><b style="color:goldenrod;">[loaded packages from local system]</b></p>
 
 <pre>
-bash loaded_modules.sh -s json,toml
-bash loaded_modules.sh -L /usr/local/share/lua/5.3/ json,toml
+bash loaded_modules.sh -s &lt;pkg&gt;,&lt;pkg&gt;
+bash loaded_modules.sh -L /usr/local/share/lua/5.3/ &lt;pkg&gt;,&lt;pkg&gt;
 </pre>
 
 <p><b style="color:goldenrod;">[get source before compile]</b></p>
 
 <pre>
-bash loaded_modules.sh -d -s json,toml
-bash loaded_modules.sh -d -L /usr/local/share/lua/5.3 json,toml
-bash loaded_modules.sh -d -L /usr/local/share/lua/5.3/ json,toml
-bash loaded_modules.sh -d -L /usr/share/lua/5.3:/usr/local/share/lua/5.3 json,toml
-DEVMODE=1 bash loaded_modules.sh -s json,toml
-DEVMODE=1 bash loaded_modules.sh -L /usr/local/share/lua/5.3 json,toml
-DEVMODE=1 bash loaded_modules.sh -L /usr/local/share/lua/5.3/ json,toml
-DEVMODE=1 bash loaded_modules.sh -L /usr/share/lua/5.3:/usr/local/share/lua/5.3 json,toml
+bash loaded_modules.sh -d -s &lt;pkg&gt;,&lt;pkg&gt;
+bash loaded_modules.sh -d -L /usr/local/share/lua/5.3 &lt;pkg&gt;,&lt;pkg&gt;
+bash loaded_modules.sh -d -L /usr/local/share/lua/5.3/ &lt;pkg&gt;,&lt;pkg&gt;
+bash loaded_modules.sh -d -L /usr/share/lua/5.3:/usr/local/share/lua/5.3 &lt;pkg&gt;,&lt;pkg&gt;
+DEVMODE=1 bash loaded_modules.sh -s &lt;pkg&gt;,&lt;pkg&gt;
+DEVMODE=1 bash loaded_modules.sh -L /usr/local/share/lua/5.3 &lt;pkg&gt;,&lt;pkg&gt;
+DEVMODE=1 bash loaded_modules.sh -L /usr/local/share/lua/5.3/ &lt;pkg&gt;,&lt;pkg&gt;
+DEVMODE=1 bash loaded_modules.sh -L /usr/share/lua/5.3:/usr/local/share/lua/5.3 &lt;pkg&gt;,&lt;pkg&gt;
 </pre>
 
 <p><b style="color:goldenrod;">[remove packages from modules]</b></p>
 
 <pre>
-bash loaded_modules.sh -r json,toml
+bash loaded_modules.sh -r &lt;pkg&gt;,&lt;pkg&gt;
 </pre>
 
 <p><b style="color:goldenrod;">[reload packages from local system]</b></p>
 
 <pre>
-bash loaded_modules.sh -r json,toml -d -s json,toml
+bash loaded_modules.sh -r &lt;pkg&gt;,&lt;pkg&gt; -d -s &lt;pkg&gt;,&lt;pkg&gt;
 </pre>
 
 <p><b style="color:goldenrod;">[buggy]</b></p>
 
 <pre>
 DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d
-DEVMODE=1 bash loaded_modules.sh -r json,toml -d -d -d -d -d -d -h
-DEVMODE=1 bash loaded_modules.sh -r json,toml -d -d -d -d -d -d
+DEVMODE=1 bash loaded_modules.sh -r &lt;pkg&gt;,&lt;pkg&gt; -d -d -d -d -d -d -h
+DEVMODE=1 bash loaded_modules.sh -r &lt;pkg&gt;,&lt;pkg&gt; -d -d -d -d -d -d
 DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -h
-DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -r json,toml -h
-DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -r json,toml
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -r &lt;pkg&gt;,&lt;pkg&gt; -h
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -r &lt;pkg&gt;,&lt;pkg&gt;
 </pre>
