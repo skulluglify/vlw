@@ -59,7 +59,7 @@ function lua_compiler () {
 }
 
 function eraser_source () {
-    if [ $DEVMODE -eq 0 -a $compare_us -eq 0 ]; then
+    if [ $DEVMODE -eq 0 -a $compare_us -eq 1 ]; then
         echo -e "\033[1;36;41m erase \033[1;32;40m ${1} \033[0m"
         rm -rf modules/$1
     fi
