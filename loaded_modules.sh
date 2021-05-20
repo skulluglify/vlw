@@ -74,7 +74,7 @@ function loaded_module () {
                 dirnames=$(dirname $x)
                 dirnames=${dirnames:$n}
                 if [ $dirnames ]; then
-                    if [ -f modules/$dirnames/$fname -o -f modules/$dirnames/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
+                    if [ $DEVMODE -eq 0 ] && [ -f modules/$dirnames/$fname -o -f modules/$dirnames/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
                         echo -e "\033[1;30;43m already \033[1;32;40m ${dirnames}/${fname} \033[0m"
                     else
                         echo -e "\033[1;30;43m make \033[1;32;40m ${dirnames} \033[0m"
@@ -84,7 +84,7 @@ function loaded_module () {
                         eraser_source $dirnames/$fname
                     fi
                 else
-                    if [ -f modules/$fname -o -f modules/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
+                    if [ $DEVMODE -eq 0 ] && [ -f modules/$fname -o -f modules/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
                         echo -e "\033[1;30;43m already \033[1;32;40m ${fname} \033[0m"
                     else
                         copy_paste $x $fname
