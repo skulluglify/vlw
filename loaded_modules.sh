@@ -144,7 +144,11 @@ if [ "$args" ]; then
     for x in $args; do
         case $x in
             -d|-dev|--dev)
-                echo "development mode" && DEVMODE=1
+                if [ $DEVMODE -eq 0 ]; then
+                    echo "development mode" && DEVMODE=1
+                else
+                    echo -en "\033[1;31m devel has been set. \033[0m\n" && exit 1
+                fi
             ;;
             -h|--help)
                 helper

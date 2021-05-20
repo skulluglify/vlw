@@ -6,6 +6,7 @@ lua project with <span style="color:skyblue;">+conky</span></br></br>
 <b style="color:goldenrod;">[use loaded_modules in +lua scripts]</b>
 <pre>
 require "modules.init";
+require "modules.&lt;pkg&gt;";
 require "&lt;pkg&gt;";
 </pre>
 
@@ -18,7 +19,10 @@ bash loaded_modules.sh -L /usr/local/share/lua/5.3/ json,toml
 <b style="color:goldenrod;">[get source before compile]</b>
 <pre>
 bash loaded_modules.sh -d -s json,toml
+bash loaded_modules.sh -d -L /usr/local/share/lua/5.3 json,toml
 bash loaded_modules.sh -d -L /usr/local/share/lua/5.3/ json,toml
+bash loaded_modules.sh -d -L /usr/share/lua/5.3:/usr/local/share/lua/5.3 json,toml
+
 </pre>
 
 <b style="color:goldenrod;">[remove packages from modules]</b>
