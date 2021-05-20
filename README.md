@@ -22,6 +22,7 @@ bash loaded_modules.sh -d -s json,toml
 bash loaded_modules.sh -d -L /usr/local/share/lua/5.3 json,toml
 bash loaded_modules.sh -d -L /usr/local/share/lua/5.3/ json,toml
 bash loaded_modules.sh -d -L /usr/share/lua/5.3:/usr/local/share/lua/5.3 json,toml
+DEVMODE=1 bash loaded_modules.sh -s json,toml
 
 </pre>
 
@@ -33,4 +34,14 @@ bash loaded_modules.sh -r json,toml
 <b style="color:goldenrod;">[reload packages from local system]</b>
 <pre>
 bash loaded_modules.sh -r json,toml -d -s json,toml
+</pre>
+
+<b style="color:goldenrod;">[buggy]</b>
+<pre>
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d
+DEVMODE=1 bash loaded_modules.sh -r json,toml -d -d -d -d -d -d -h
+DEVMODE=1 bash loaded_modules.sh -r json,toml -d -d -d -d -d -d
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -h
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -r json,toml -h
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -r json,toml
 </pre>

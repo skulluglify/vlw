@@ -7,7 +7,13 @@ args=$@
 i=0
 s=
 
-DEVMODE=0
+if [ -n "$DEVMODE" -a -n "$(echo $DEVMODE | grep -E '^[0-9]+$')" ]; then
+    if [ $DEVMODE -eq 0 -a $DEVMODE -gt 1 ]; then
+        DEVMODE=0
+    fi
+else
+    DEVMODE=0
+fi
 
 rpkgs=
 
@@ -98,6 +104,15 @@ function loaded_module () {
 }
 
 function main () {
+    if [ $DEVMODE -gt 1 ]; then
+        echo -en "\033[1;31m devel has been set. \033[0m\n" && exit 1
+    fi
+    if [ $DEVMODE -eq 1 ]; then
+        echo -en "\033[1;30;43m development mode \033[0m"
+        echo -en "\033[1;32m DEVMODE=1 \033[0m\n"
+    else
+        echo -en "\033[1;30;46m only compile output \033[0m\n"
+    fi
     if [ -z "$(echo $args | grep -E '\-L|\-load|\-\-load')" ]; then
         s=$(echo $args | cut -d ' ' -f$(($i + 2))- | sed 's/[ |\,|\&|\%|\||\+]/|/g')
     else
@@ -118,6 +133,7 @@ function main () {
 }
 
 function helper () {
+    echo 
     echo "loaded_module lua in local source"
     echo 
     echo "bash loaded_module.sh [option] [option] pkgs"
@@ -144,21 +160,15 @@ if [ "$args" ]; then
     for x in $args; do
         case $x in
             -d|-dev|--dev)
-                if [ $DEVMODE -eq 0 ]; then
-                    echo "development mode" && DEVMODE=1
-                else
-                    echo -en "\033[1;31m devel has been set. \033[0m\n" && exit 1
-                fi
+                DEVMODE=$(($DEVMODE + 1))
             ;;
             -h|--help)
-                helper
-                break
+                helper && break
             ;;
             -L|-load|--load)
                 src=$(echo $args | cut -d ' ' -f$(($i + 2)))
                 if [ $src ]; then
-                    modules=$src && main
-                    break
+                    modules=$src && main && break
                 else
                     echo -en "\033[1;31m try again. \033[0m\n" && exit 1
                 fi
@@ -175,7 +185,7 @@ if [ "$args" ]; then
                 if [ -z "$(echo $rpkgs | grep -E '\-r|\-')" -a "$rpkgs" ]; then
                     findall=$(ls -A modules/)
                     function remove_packages () {
-                        echo $rpkgs
+                        # echo $rpkgs
                         # for x in $rpkgs; do
                         #     if [ -n "$(echo $findall | grep "$x")" ]; then
                         #         echo -e "\033[1;36;41m remove \033[1;32;40m ${rpkgs} \033[0m"

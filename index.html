@@ -7,6 +7,7 @@ lua project with <span style="color:skyblue;">+conky</span></br></br></p>
 
 <pre>
 require "modules.init";
+require "modules.&lt;pkg&gt;";
 require "&lt;pkg&gt;";
 </pre>
 
@@ -21,7 +22,11 @@ bash loaded_modules.sh -L /usr/local/share/lua/5.3/ json,toml
 
 <pre>
 bash loaded_modules.sh -d -s json,toml
+bash loaded_modules.sh -d -L /usr/local/share/lua/5.3 json,toml
 bash loaded_modules.sh -d -L /usr/local/share/lua/5.3/ json,toml
+bash loaded_modules.sh -d -L /usr/share/lua/5.3:/usr/local/share/lua/5.3 json,toml
+DEVMODE=1 bash loaded_modules.sh -s json,toml
+
 </pre>
 
 <p><b style="color:goldenrod;">[remove packages from modules]</b></p>
@@ -34,4 +39,15 @@ bash loaded_modules.sh -r json,toml
 
 <pre>
 bash loaded_modules.sh -r json,toml -d -s json,toml
+</pre>
+
+<p><b style="color:goldenrod;">[buggy]</b></p>
+
+<pre>
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d
+DEVMODE=1 bash loaded_modules.sh -r json,toml -d -d -d -d -d -d -h
+DEVMODE=1 bash loaded_modules.sh -r json,toml -d -d -d -d -d -d
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -h
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -r json,toml -h
+DEVMODE=1 bash loaded_modules.sh -d -d -d -d -d -d -r json,toml
 </pre>
