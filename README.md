@@ -23,7 +23,6 @@ bash loaded_modules.sh -d -L /usr/local/share/lua/5.3 json,toml
 bash loaded_modules.sh -d -L /usr/local/share/lua/5.3/ json,toml
 bash loaded_modules.sh -d -L /usr/share/lua/5.3:/usr/local/share/lua/5.3 json,toml
 DEVMODE=1 bash loaded_modules.sh -s json,toml
-
 </pre>
 
 <b style="color:goldenrod;">[remove packages from modules]</b>
