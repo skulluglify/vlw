@@ -128,7 +128,7 @@ for x in $args; do
             main && break
         ;;
         *)
-            echo "unknown format arguments input!" && break
+            echo -en "\033[1;33m unknown format arguments input! \033[0m\n" && exit 1
         ;;
     esac
     i=$(($i + 1))
