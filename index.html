@@ -3,27 +3,34 @@
 <p><h4><span>STATUS: </span>COMING SOON!</h4><br />
 lua project with <span style="color:skyblue;">+conky</span></br></br></p>
 
-<p><b style="color:goldenrod;">[loaded lua packages from local system]</b></p>
+<p><b style="color:goldenrod;">[use loaded_modules in +lua scripts]</b></p>
+
+<pre>
+require "modules.init";
+require "&lt;pkg&gt;";
+</pre>
+
+<p><b style="color:goldenrod;">[loaded packages from local system]</b></p>
 
 <pre>
 bash loaded_modules.sh -s json,toml
 bash loaded_modules.sh -L /usr/local/share/lua/5.3/ json,toml
 </pre>
 
-<p><b style="color:goldenrod;">[development mode]</b></p>
+<p><b style="color:goldenrod;">[get source before compile]</b></p>
 
 <pre>
 bash loaded_modules.sh -d -s json,toml
 bash loaded_modules.sh -d -L /usr/local/share/lua/5.3/ json,toml
 </pre>
 
-<p><b style="color:goldenrod;">[remove packages]</b></p>
+<p><b style="color:goldenrod;">[remove packages from modules]</b></p>
 
 <pre>
 bash loaded_modules.sh -r json,toml
 </pre>
 
-<p><b style="color:goldenrod;">[reload packages]</b></p>
+<p><b style="color:goldenrod;">[reload packages from local system]</b></p>
 
 <pre>
 bash loaded_modules.sh -r json,toml -d -s json,toml
