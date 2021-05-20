@@ -65,13 +65,19 @@ function loaded_module () {
                 fname=$(basename $x)
                 dirnames=$(dirname $x)
                 dirnames=${dirnames:$n}
-                if [ ! -f modules/$dirnames/$fname -o ! -f modules/$fname ]; then
-                    if [ $dirnames ]; then
+                if [ $dirnames ]; then
+                    if [ -f modules/$dirnames/$fname -o -f modules/$dirnames/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
+                        echo -e "\033[1;30;43m already \033[1;32;40m ${dirnames}/${fname} \033[0m"
+                    else
                         echo -e "\033[1;30;43m make \033[1;32;40m ${dirnames} \033[0m"
                         mkdir -p modules/$dirnames
                         copy_paste $x $dirnames/$fname
                         lua_compiler $dirnames/$fname
                         eraser_source $dirnames/$fname
+                    fi
+                else
+                    if [ -f modules/$fname -o -f modules/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
+                        echo -e "\033[1;30;43m already \033[1;32;40m ${fname} \033[0m"
                     else
                         copy_paste $x $fname
                         lua_compiler $fname
