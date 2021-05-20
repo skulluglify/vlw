@@ -58,7 +58,11 @@ function eraser_source () {
 
 function loaded_module () {
     n=${#1}
-    s=$(echo $args | cut -d ' ' -f$(($i + 2))- | sed 's/ /|/g')
+    if [ -z "$(echo $args | grep -E '\-L|\-load|\-\-load')" ]; then
+        s=$(echo $args | cut -d ' ' -f$(($i + 2))- | sed 's/ /|/g')
+    else
+        s=$(echo $args | cut -d ' ' -f$(($i + 3))- | sed 's/ /|/g')
+    fi
     if [ -n "$s" ]; then
         for x in $(find $1 -type f,l); do
             if [ -f $x -a -z "$(echo $x | grep 'luarocks')" -a -n "$(echo $x | grep -E "$s")" ]; then
@@ -87,6 +91,12 @@ function loaded_module () {
             fi
         done
     fi
+    findall=$(find modules/ -type f,l)
+    for x in $(echo $s | sed 's/|/ /g'); do
+        if [ -z "$(echo $findall | grep "$x")" ]; then
+            echo -e "\033[1;37;41m unknown \033[1;32;40m ${x} \033[0m"
+        fi
+    done
 }
 
 function main () {
