@@ -8,6 +8,8 @@ i=0
 
 DEVMODE=0
 
+rpkgs=
+
 #? ls -lh $(dirname $(pwd)) | grep $(basename $(pwd)) | cut -d ' ' -f1
 #? drwxrwxr-x drwxr-xr-x
 
@@ -56,13 +58,10 @@ function eraser_source () {
     fi
 }
 
+s=
+
 function loaded_module () {
     n=${#1}
-    if [ -z "$(echo $args | grep -E '\-L|\-load|\-\-load')" ]; then
-        s=$(echo $args | cut -d ' ' -f$(($i + 2))- | sed 's/ /|/g')
-    else
-        s=$(echo $args | cut -d ' ' -f$(($i + 3))- | sed 's/ /|/g')
-    fi
     if [ -n "$s" ]; then
         for x in $(find $1 -type f,l); do
             if [ -f $x -a -z "$(echo $x | grep 'luarocks')" -a -n "$(echo $x | grep -E "$s")" ]; then
@@ -100,52 +99,114 @@ function loaded_module () {
 }
 
 function main () {
+    if [ -z "$(echo $args | grep -E '\-L|\-load|\-\-load')" ]; then
+        s=$(echo $args | cut -d ' ' -f$(($i + 2))- | sed 's/ /|/g')
+    else
+        s=$(echo $args | cut -d ' ' -f$(($i + 3))- | sed 's/ /|/g')
+    fi
+    # if [ -n "$(echo $args | grep -E '\-r|\-remove|\-\-remove')" ]; then
+    #     s=$(echo $s | cut -d \| -f2-)
+    # fi
+    if [ -n "$(echo $s | grep -E '\-d|\-')" -o -n "$(echo $modules | grep -E '\-d|\-')" ]; then
+        echo -en "\033[1;31m try again. \033[0m\n" && exit 1
+    fi
     for x in $(echo $modules | sed 's/:/ /g'); do
         if [ -d $x ]; then
+            echo -e "\033[1;30;45m target \033[1;32;40m [path] ${x} \033[0m"
             loaded_module $(fstring $x)
         fi
     done
 }
 
-for x in $args; do
-    case $x in
-        -d|-dev|--dev)
-            echo "development mode" && DEVMODE=1
-        ;;
-        -h|--help)
-            echo "loaded_module lua in local source"
-            echo 
-            echo "bash loaded_module.sh [option] [option] pkgs"
-            echo 
-            echo " -d -dev --dev "
-            echo "    enable development mode"
-            echo 
-            echo " -h --help "
-            echo "    helper"
-            echo 
-            echo " -L -load --load "
-            echo "    [option] [src] load source with path"
-            echo 
-            echo " -s -source --local-source "
-            echo "    default path /usr/share/lua/5.3/:/usr/local/share/lua/5.3/"
-            echo 
-            break
-        ;;
-        -L|-load|--load)
-            src=$(echo $args | cut -d ' ' -f$(($i + 2)))
-            if [ $src ]; then
-                modules=$src && main
+function helper () {
+    echo "loaded_module lua in local source"
+    echo 
+    echo "bash loaded_module.sh [option] [option] pkgs"
+    echo 
+    echo " -d -dev --dev "
+    echo "    enable development mode"
+    echo 
+    echo " -h --help "
+    echo "    helper"
+    echo 
+    echo " -L -load --load "
+    echo "    [option] [path] [pkgs] load pkgs source"
+    echo 
+    echo " -s -source --local-source "
+    echo "    [option] [pkgs] loaded pkgs"
+    echo "    default path /usr/share/lua/5.3/:/usr/local/share/lua/5.3/"
+    echo 
+    echo " -r -remove --remove "
+    echo "    [option] [pkgs] remove pkgs"
+    echo 
+}
+
+if [ "$args" ]; then
+    for x in $args; do
+        case $x in
+            -d|-dev|--dev)
+                echo "development mode" && DEVMODE=1
+            ;;
+            -h|--help)
+                helper
                 break
-            else
-                echo -en "\033[1;31m try again. \033[0m\n" && exit 1
-            fi
-        ;;
-        -s|-source|--local-source)
-            main && break
-        ;;
-        *)
-            echo -en "\033[1;33m unknown format arguments input! \033[0m\n" && exit 1
-        ;;
-    esac
-    i=$(($i + 1))
-done
+            ;;
+            -L|-load|--load)
+                src=$(echo $args | cut -d ' ' -f$(($i + 2)))
+                if [ $src ]; then
+                    modules=$src && main
+                    break
+                else
+                    echo -en "\033[1;31m try again. \033[0m\n" && exit 1
+                fi
+            ;;
+            -s|-source|--local-source)
+                main && break
+            ;;
+            -r|-remove|--remove)
+                rpkgs=$(echo $args | cut -d ' ' -f$(($i + 2)))
+                # if [ -n "$(echo $rpkgs | grep ',')" ]; then
+                #     rpkgs=$(echo $rpkgs | sed 's/,/ /g')
+                # fi
+                rpkgs=$(echo $rpkgs | tr ',' '\n')
+                if [ -z "$(echo $rpkgs | grep -E '\-r|\-')" -a "$rpkgs" ]; then
+                    findall=$(ls -A modules/)
+                    function remove_packages () {
+                        echo $rpkgs
+                        # for x in $rpkgs; do
+                        #     if [ -n "$(echo $findall | grep "$x")" ]; then
+                        #         echo -e "\033[1;36;41m remove \033[1;32;40m ${rpkgs} \033[0m"
+                        #         rm -rf $(echo $findall | grep "$x")
+                        #     else
+                        #         echo -e "\033[1;36;41m unknown \033[1;32;40m ${rpkgs} \033[0m"
+                        #     fi
+                        # done
+                        while IFS= read -r x; do
+                            if [ -n "$(echo $findall | grep "$x")" ]; then
+                                echo -e "\033[1;36;41m remove \033[1;32;40m ${x} \033[0m"
+                                for pkg in $(echo $findall | grep "$x"); do
+                                    rm -rf modules/$pkg
+                                done
+                            else
+                                echo -e "\033[1;36;41m unknown \033[1;32;40m ${x} \033[0m"
+                            fi
+                        done <<< $rpkgs    
+                    }
+                    remove_packages
+                else
+                    echo -en "\033[1;31m try again. \033[0m\n" && exit 1
+                fi
+            ;;
+            *)
+                if [ -z "$rpkgs" ]; then
+                    echo -en "\033[1;33m unknown format arguments input! \033[0m\n" && exit 1
+                fi
+            ;;
+        esac
+        i=$(($i + 1))
+    done
+else
+    helper
+fi
+
+
