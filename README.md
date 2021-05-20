@@ -1,9 +1,9 @@
 # vlw project
 
 <h4><span>STATUS: </span>COMING SOON!</h4><br />
-lua project with <span style="color:skyblue;">+conky</span>
+lua project with <span style="color:skyblue;">+conky</span></br>
 
-<b style="color:goldenrod;">[loaded lua package from local system]</b>
+<b style="color:goldenrod;">[loaded lua packages from local system]</b>
 <pre>
 bash loaded_modules.sh -s json toml
 bash loaded_modules.sh -L /usr/local/share/lua/5.3/ json toml
