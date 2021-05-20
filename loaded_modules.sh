@@ -5,6 +5,7 @@ modules=/usr/share/lua/5.3/:/usr/local/share/lua/5.3/
 args=$@
 
 i=0
+s=
 
 DEVMODE=0
 
@@ -58,8 +59,6 @@ function eraser_source () {
     fi
 }
 
-s=
-
 function loaded_module () {
     n=${#1}
     if [ -n "$s" ]; then
@@ -89,20 +88,20 @@ function loaded_module () {
                 fi
             fi
         done
+        findall=$(find modules/ -type f,l)
+        for x in $(echo $s | sed 's/|/ /g'); do
+            if [ -z "$(echo $findall | grep "$x")" ]; then
+                echo -e "\033[1;37;41m unknown \033[1;32;40m ${x} \033[0m"
+            fi
+        done
     fi
-    findall=$(find modules/ -type f,l)
-    for x in $(echo $s | sed 's/|/ /g'); do
-        if [ -z "$(echo $findall | grep "$x")" ]; then
-            echo -e "\033[1;37;41m unknown \033[1;32;40m ${x} \033[0m"
-        fi
-    done
 }
 
 function main () {
     if [ -z "$(echo $args | grep -E '\-L|\-load|\-\-load')" ]; then
-        s=$(echo $args | cut -d ' ' -f$(($i + 2))- | sed 's/ /|/g')
+        s=$(echo $args | cut -d ' ' -f$(($i + 2))- | sed 's/[ |\,|\&|\%|\||\+]/|/g')
     else
-        s=$(echo $args | cut -d ' ' -f$(($i + 3))- | sed 's/ /|/g')
+        s=$(echo $args | cut -d ' ' -f$(($i + 3))- | sed 's/[ |\,|\&|\%|\||\+]/|/g')
     fi
     # if [ -n "$(echo $args | grep -E '\-r|\-remove|\-\-remove')" ]; then
     #     s=$(echo $s | cut -d \| -f2-)
@@ -168,7 +167,7 @@ if [ "$args" ]; then
                 # if [ -n "$(echo $rpkgs | grep ',')" ]; then
                 #     rpkgs=$(echo $rpkgs | sed 's/,/ /g')
                 # fi
-                rpkgs=$(echo $rpkgs | tr ',' '\n')
+                rpkgs=$(echo $rpkgs | sed 's/[ |\,|\&|\%|\||\+]/\n/g')
                 if [ -z "$(echo $rpkgs | grep -E '\-r|\-')" -a "$rpkgs" ]; then
                     findall=$(ls -A modules/)
                     function remove_packages () {
