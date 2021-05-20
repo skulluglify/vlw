@@ -1,7 +1,7 @@
 # vlw project
 
 <h4><span>STATUS: </span>COMING SOON!</h4><br />
-lua project with <span style="color:skyblue;">+conky</span></br>
+lua project with <span style="color:skyblue;">+conky</span></br></br>
 
 <b style="color:goldenrod;">[loaded lua packages from local system]</b>
 <pre>
