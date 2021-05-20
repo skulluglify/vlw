@@ -212,5 +212,3 @@ if [ "$args" ]; then
 else
     helper
 fi
-
-
