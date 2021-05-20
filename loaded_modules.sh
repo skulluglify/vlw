@@ -83,7 +83,7 @@ function loaded_module () {
                 dirnames=${dirnames:$n}
                 if [ $dirnames ]; then
                     compare_sha256 modules/$dirnames/$fname $x
-                    if [ $DEVMODE -eq 0 -a $compare_us -eq 1 ] && [ -f modules/$dirnames/$fname -o -f modules/$dirnames/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
+                    if [ $DEVMODE -eq 1 -a $compare_us -eq 1 ] && [ -f modules/$dirnames/$fname -o -f modules/$dirnames/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
                         echo -e "\033[1;30;43m already \033[1;32;40m ${dirnames}/${fname} \033[0m"
                     else
                         if [ $compare_us -eq 0 ]; then
@@ -98,7 +98,7 @@ function loaded_module () {
                     fi
                 else
                     compare_sha256 modules/$fname $x
-                    if [ $DEVMODE -eq 0 -a $compare_us -eq 1 ] && [ -f modules/$fname -o -f modules/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
+                    if [ $DEVMODE -eq 1 -a $compare_us -eq 1 ] && [ -f modules/$fname -o -f modules/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
                         echo -e "\033[1;30;43m already \033[1;32;40m ${fname} \033[0m"
                     else
                         if [ $compare_us -eq 0 ]; then
