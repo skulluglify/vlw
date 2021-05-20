@@ -14,3 +14,14 @@ bash loaded_modules.sh -L /usr/local/share/lua/5.3/ json,toml
 bash loaded_modules.sh -d -s json,toml
 bash loaded_modules.sh -d -L /usr/local/share/lua/5.3/ json,toml
 </pre>
+
+<b style="color:goldenrod;">[remove packages]</b>
+<pre>
+bash loaded_modules.sh -r json,toml
+bash loaded_modules.sh -r json,toml -d -s json,toml
+</pre>
+
+<b style="color:goldenrod;">[reload packages]</b>
+<pre>
+bash loaded_modules.sh -r json,toml -d -s json,toml
+</pre>
