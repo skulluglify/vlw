@@ -184,7 +184,8 @@ if [ "$args" ]; then
                         while IFS= read -r x; do
                             if [ -n "$(echo $findall | grep "$x")" ]; then
                                 echo -e "\033[1;36;41m remove \033[1;32;40m ${x} \033[0m"
-                                for pkg in $(echo $findall | grep "$x"); do
+                                for pkg in $(ls -A modules/ | grep "$x"); do
+                                    echo -e "\033[1;30;43m delete \033[1;32;40m [$x] modules/${pkg} \033[0m"
                                     rm -rf modules/$pkg
                                 done
                             else
