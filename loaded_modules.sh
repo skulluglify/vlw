@@ -4,7 +4,7 @@ modules=/usr/share/lua/5.3/:/usr/local/share/lua/5.3/
 
 args=$@
 i=0
-compare_us=0
+compare_both=0
 s=
 
 if [ -n "$DEVMODE" -a -n "$(echo $DEVMODE | grep -E '^[0-9]+$')" ]; then
@@ -59,7 +59,7 @@ function lua_compiler () {
 }
 
 function eraser_source () {
-    if [ $DEVMODE -eq 0 -a $compare_us -eq 1 ]; then
+    if [ $DEVMODE -eq 0 -a $compare_both -eq 1 ]; then
         echo -e "\033[1;36;41m erase \033[1;32;40m ${1} \033[0m"
         rm -rf modules/$1
     fi
@@ -67,9 +67,9 @@ function eraser_source () {
 
 function compare_sha256 () {
     if [ -f $1 ] && [ "$(cat $1 | openssl dgst -sha256 -hmac 'key')" == "$(cat $2 | openssl dgst -sha256 -hmac 'key')" ]; then
-        compare_us=1
+        compare_both=1
     else
-        compare_us=0
+        compare_both=0
     fi
 }
 
@@ -83,14 +83,15 @@ function loaded_module () {
                 dirnames=${dirnames:$n}
                 if [ $dirnames ]; then
                     compare_sha256 modules/$dirnames/$fname $x
-                    if [ $DEVMODE -eq 1 -a $compare_us -eq 1 -a -f modules/$dirnames/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
+                    if [ $DEVMODE -eq 1 -a $compare_both -eq 1 -a -f modules/$dirnames/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
                         echo -e "\033[1;30;43m already \033[1;32;40m ${dirnames}/${fname} \033[0m"
                     else
-                        if [ $compare_us -eq 0 ]; then
+                        if [ $compare_both -eq 0 ]; then
                             echo -e "\033[1;30;43m make \033[1;32;40m ${dirnames} \033[0m"
                             mkdir -p modules/$dirnames
                             copy_paste $x $dirnames/$fname
                             lua_compiler $dirnames/$fname
+                            compare_both=1
                         else
                             echo -e "\033[1;30;43m already \033[1;32;40m ${dirnames}/${fname} \033[0m"
                         fi
@@ -98,12 +99,13 @@ function loaded_module () {
                     fi
                 else
                     compare_sha256 modules/$fname $x
-                    if [ $DEVMODE -eq 1 -a $compare_us -eq 1 -a -f modules/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
+                    if [ $DEVMODE -eq 1 -a $compare_both -eq 1 -a -f modules/$(echo $fname | sed 's/\.lua/\.o/g') ]; then
                         echo -e "\033[1;30;43m already \033[1;32;40m ${fname} \033[0m"
                     else
-                        if [ $compare_us -eq 0 ]; then
+                        if [ $compare_both -eq 0 ]; then
                             copy_paste $x $fname
                             lua_compiler $fname
+                            compare_both=1
                         else
                             echo -e "\033[1;30;43m already \033[1;32;40m ${fname} \033[0m"
                         fi
